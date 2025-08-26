@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
@@ -16,6 +19,17 @@ jobs:
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v3
+
+      - name: Configure git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push changes (if any)
+        run: |
+          git add -A
+          git commit -m "chore: automated update from workflow" || echo "No changes to commit"
+          git push
 
       - name: Build And Deploy
         uses: Azure/static-web-apps-deploy@v1
