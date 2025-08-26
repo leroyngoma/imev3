@@ -24,8 +24,7 @@ jobs:
           action: "upload"
           app_location: "/"       # folder with index.html
           api_location: ""        # no API
-          output_location: "/"    # no build output
-          app_build_command: ""   # 🚨 tells Oryx: skip Node/npm build
+          output_location: ""     # empty for no build output; deploy app_location directly
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
