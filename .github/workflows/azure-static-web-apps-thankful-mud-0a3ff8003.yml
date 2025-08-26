@@ -31,7 +31,12 @@ jobs:
           git commit -m "chore: automated update from workflow" || echo "No changes to commit"
           git push
 
+      - name: Skip deploy on PR (secrets not available)
+        if: github.event_name == 'pull_request'
+        run: echo "Skipping Azure SWA deploy on pull_request; secrets are not available for PRs from forks."
+
       - name: Build And Deploy
+        if: github.event_name == 'push'
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
